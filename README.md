@@ -50,14 +50,3 @@ If you want to run Stroke Self-Attention phase:
 ```
 !python main_sketch.py --dataset_name ChairV2 --root_dir <Your dataset dir> --save_dir <Your dir that you want to save checkpoint> --lr 0.00001 --pretrained_dir <The pretrained dir of 200 epochs first>
 ```
-
-## Ciatation
-If you find this article useful in your research, please consider citing:
-
-```
-@inproceedings{tuannh2026sketch,
-  title={Augmented-view contrastive and Stroke Self-Attention for On-The-Fly Fine-Grained SBIR},
-  author={Tuan Nguyen Huu and Long Dang Hoang and Anh Nguyen Thi Tu and Phuong Tu Minh},
-  year={2026}
-}
-```
