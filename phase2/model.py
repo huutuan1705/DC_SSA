@@ -18,16 +18,17 @@ class SketchAttention(nn.Module):
         self.proj = Linear_global(feature_num=args.output_size)
         
     def forward(self, x, return_attn=False):
-        identify = x
-        x_att = self.norm(x)
-        att_out, att_w  = self.mha(x_att, x_att, x_att)
-        att_out = self.dropout(att_out)
-        attn = identify * att_out + identify
-        attn = F.normalize(attn)
+        # identify = x
+        # x_att = self.norm(x)
+        # att_out, att_w  = self.mha(x_att, x_att, x_att)
+        # att_out = self.dropout(att_out)
+        # attn = identify * att_out + identify
+        # attn = F.normalize(attn)
+        # output = self.proj(attn)
         
-        output = self.proj(attn)
-        if return_attn:
-            return output, att_w
+        output = self.proj(x)
+        # if return_attn:
+        #     return output, att_w
         return output
 
 class Siamese_SBIR(nn.Module):
