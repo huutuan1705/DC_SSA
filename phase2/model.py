@@ -18,15 +18,15 @@ class SketchAttention(nn.Module):
         self.proj = Linear_global(feature_num=args.output_size)
         
     def forward(self, x, return_attn=False):
-        # identify = x
-        # x_att = self.norm(x)
-        # att_out, att_w  = self.mha(x_att, x_att, x_att)
-        # att_out = self.dropout(att_out)
-        # attn = identify * att_out + identify
-        # attn = F.normalize(attn)
-        # output = self.proj(attn)
+        identify = x
+        x_att = self.norm(x)
+        att_out, att_w  = self.mha(x_att, x_att, x_att)
+        att_out = self.dropout(att_out)
+        attn = identify * att_out + identify
+        attn = F.normalize(attn)
+        output = self.proj(attn)
         
-        output = self.proj(x)
+        # output = self.proj(x)
         # if return_attn:
         #     return output, att_w
         return output
@@ -43,11 +43,11 @@ class Siamese_SBIR(nn.Module):
         self.sketch_attention = SelfAttention(args)
         self.sketch_linear = Linear_global(feature_num=args.output_size)
         
-        self.sample_embedding_network.fix_weights()
-        self.sketch_embedding_network.fix_weights()
-        self.attention.fix_weights()
-        self.sketch_attention.fix_weights()
-        self.linear.fix_weights()
+        # self.sample_embedding_network.fix_weights()
+        # self.sketch_embedding_network.fix_weights()
+        # self.attention.fix_weights()
+        # self.sketch_attention.fix_weights()
+        # self.linear.fix_weights()
         
         self.attn = SketchAttention(args)        
 
