@@ -10,6 +10,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class SketchAttention(nn.Module):
     def __init__(self, args):
         super(SketchAttention, self).__init__()
+        self.args = args
         self.pool_method =  nn.AdaptiveAvgPool2d(1)
         self.norm = nn.LayerNorm(2048)
         self.mha = nn.MultiheadAttention(2048, num_heads=8, batch_first=True)
@@ -23,8 +24,12 @@ class SketchAttention(nn.Module):
         att_out, _  = self.mha(x_att, x_att, x_att)
         att_out = self.dropout(att_out)
         
-        # attn = identify * att_out + identify
-        attn = identify * att_out
+        if self.args.state == 0:
+            attn = identify * att_out + identify
+        elif self.args.state == 1:
+            attn = identify + att_out
+        elif self.args.state == 1:
+            attn = identify * att_out
         attn = F.normalize(attn)
         output = self.proj(attn)
         

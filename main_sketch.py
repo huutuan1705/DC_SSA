@@ -17,6 +17,8 @@ if __name__ == "__main__":
     
     parsers.add_argument('--use_kaiming_init', type=bool, default=True)
     parsers.add_argument('--load_pretrained', type=bool, default=False)
+    parsers.add_argument('--state', type=int, default=0, help="0: full residual, 1: additive residual, 2: multiplicative residual")
+    
     
     parsers.add_argument('--batch_size', type=int, default=48)
     parsers.add_argument('--test_batch_size', type=int, default=1)
@@ -27,7 +29,7 @@ if __name__ == "__main__":
     parsers.add_argument('--temperature', default=0.07, type=float, help='softmax temperature (default: 0.07)')
     parsers.add_argument('--threads', type=int, default=4)
     parsers.add_argument('--lr', type=float, default=0.0001)
-    parsers.add_argument('--epochs', type=int, default=200)
+    parsers.add_argument('--epochs', type=int, default=100)
     
     args = parsers.parse_args()
     model = Siamese_SBIR(args).to(device)
