@@ -53,7 +53,7 @@ class FGSBIR_Dataset(Dataset):
             negative_item = posible_list[randint(0, len(posible_list)-1)]
             negative_sample = '_'.join(self.train_sketch[negative_item].split('/')[-1].split('_')[:-1])
             negative_path = os.path.join(self.root_dir, 'photo', negative_sample + '.png')
-            
+              
             vector_x = self.coordinate[sketch_path]
             sketch_img = rasterize_sketch(vector_x)
                

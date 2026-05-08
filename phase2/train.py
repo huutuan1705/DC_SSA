@@ -140,11 +140,11 @@ def train_model(model, args):
 
         losses = []
         for _, batch_data in enumerate(tqdm(dataloader_train, dynamic_ncols=False)):
-            # model.sketch_embedding_network.eval()
-            # model.sample_embedding_network.eval()
-            # model.sketch_attention.eval()
-            # model.attention.eval()
-            # model.linear.eval()
+            model.sketch_embedding_network.eval()
+            model.sample_embedding_network.eval()
+            model.sketch_attention.eval()
+            model.attention.eval()
+            model.linear.eval()
             model.attn.train()
             # model.sketch_linear.train()
             optimizer.zero_grad()
