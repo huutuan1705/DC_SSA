@@ -27,7 +27,7 @@ class FGSBIR_Dataset(Dataset):
         # self.train_transform_1 = get_transform(type='train', aug_mode=1)
         # self.train_transform_2 = get_transform(type='train', aug_mode=2)
         for i in range(self.args.num_views):
-            setattr(self, f"train_transform_{i+1}", get_transform(type='train', aug_mode=i+1))
+            setattr(self, f"train_transform_{i+1}", get_transform(args, type='train', aug_mode=i+1))
             
         self.test_transform = get_transform('test')
         

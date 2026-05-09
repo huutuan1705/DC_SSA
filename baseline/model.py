@@ -10,13 +10,20 @@ class Siamese_SBIR(nn.Module):
     def __init__(self, args):
         super(Siamese_SBIR, self).__init__()
         self.args = args
-        self.sample_embedding_network = InceptionV3(args=args)
-        self.attention = SelfAttention(args)
-        self.linear = Linear_global(feature_num=self.args.output_size)
+        self.sample_embedding_network = eval(args.backbone + "(args)")
+        self.sketch_embedding_network = eval(args.backbone + "(args)")
         
-        self.sketch_embedding_network = InceptionV3(args=args)
+        if self.args.backbone == "ViT":
+            in_feature = 768
+        else:
+            in_feature = 2048
+            
+        self.linear = Linear_global(feature_num=self.args.output_size, in_features=in_feature)
+        self.sketch_linear = Linear_global(feature_num=self.args.output_size, in_features=in_feature)
+            
+        self.attention = SelfAttention(args)
         self.sketch_attention = SelfAttention(args)
-        self.sketch_linear = Linear_global(feature_num=self.args.output_size)
+        
 
         def init_weights(m):
             if type(m) == nn.Linear:

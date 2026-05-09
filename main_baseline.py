@@ -7,6 +7,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 if __name__ == "__main__":
     parsers = argparse.ArgumentParser(description='Baseline Fine-Grained SBIR model')
+    parsers.add_argument('--backbone', type=str, default='InceptionV3', help="InceptionV3/ViT/ResNet50")
     parsers.add_argument('--dataset_name', type=str, default='ShoeV2')
     parsers.add_argument('--output_size', type=int, default=64)
     parsers.add_argument('--num_heads', type=int, default=8)
