@@ -28,7 +28,7 @@ class SketchAttention(nn.Module):
             attn = identify * att_out + identify
         elif self.args.state == 1:
             attn = identify + att_out
-        elif self.args.state == 1:
+        elif self.args.state == 2:
             attn = identify * att_out
         attn = F.normalize(attn)
         output = self.proj(attn)
