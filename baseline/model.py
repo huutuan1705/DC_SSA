@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from baseline.backbones import InceptionV3
+from baseline.backbones import InceptionV3, ViT, ResNet50
 from baseline.attention import Linear_global, SelfAttention
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
