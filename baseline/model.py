@@ -17,13 +17,12 @@ class Siamese_SBIR(nn.Module):
             in_feature = 768
         else:
             in_feature = 2048
-            
+        
+        self.attention = SelfAttention(args, in_feature=in_feature)
+        self.sketch_attention = SelfAttention(args, in_feature=in_feature)
+        
         self.linear = Linear_global(feature_num=self.args.output_size, in_features=in_feature)
         self.sketch_linear = Linear_global(feature_num=self.args.output_size, in_features=in_feature)
-            
-        self.attention = SelfAttention(args)
-        self.sketch_attention = SelfAttention(args)
-        
 
         def init_weights(m):
             if type(m) == nn.Linear:

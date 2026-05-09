@@ -3,11 +3,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class SelfAttention(nn.Module):
-    def __init__(self, args):
+    def __init__(self, args, in_feature=2048):
         super(SelfAttention, self).__init__()
+        self.in_feature = in_feature
         self.pool_method =  nn.AdaptiveAvgPool2d(1)
-        self.norm = nn.LayerNorm(2048)
-        self.mha = nn.MultiheadAttention(2048, num_heads=args.num_heads, batch_first=True)
+        self.norm = nn.LayerNorm(in_feature)
+        self.mha = nn.MultiheadAttention(in_feature, num_heads=args.num_heads, batch_first=True)
         # self.mha = nn.MultiheadAttention(2048, num_heads=8, batch_first=True)
         self.dropout = nn.Dropout(p=0.2)
         
@@ -22,7 +23,7 @@ class SelfAttention(nn.Module):
         att_out = att_out.transpose(1, 2).reshape(bs, c, h, w)
         
         output = identify * att_out + identify
-        output = self.pool_method(output).view(-1, 2048)
+        output = self.pool_method(output).view(-1, self.in_feature)
         
         return F.normalize(output)
     
