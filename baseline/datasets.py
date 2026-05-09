@@ -29,7 +29,7 @@ class FGSBIR_Dataset(Dataset):
         for i in range(self.args.num_views):
             setattr(self, f"train_transform_{i+1}", get_transform(args, type='train', aug_mode=i+1))
             
-        self.test_transform = get_transform('test')
+        self.test_transform = get_transform(args, type='test')
         
     def __len__(self):
         if self.mode == 'train':
