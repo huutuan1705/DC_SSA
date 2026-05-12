@@ -5,6 +5,7 @@ import torch.nn.functional as F
 class SelfAttention(nn.Module):
     def __init__(self, args, in_feature=2048):
         super(SelfAttention, self).__init__()
+        self.args = args
         self.in_feature = in_feature
         self.pool_method =  nn.AdaptiveAvgPool2d(1)
         self.norm = nn.LayerNorm(in_feature)
@@ -14,17 +15,27 @@ class SelfAttention(nn.Module):
         
     def forward(self, x):
         identify = x
-        bs, c, h, w = x.shape
-        x_att = x.reshape(bs, c, h*w).transpose(1, 2)
-        x_att = self.norm(x_att)
-        
-        att_out, _  = self.mha(x_att, x_att, x_att)
-        att_out = self.dropout(att_out)
-        att_out = att_out.transpose(1, 2).reshape(bs, c, h, w)
-        
-        output = identify * att_out + identify
-        output = self.pool_method(output).view(-1, self.in_feature)
-        
+        if self.args.backbone != "ViT":
+            bs, c, h, w = x.shape
+            x_att = x.reshape(bs, c, h*w).transpose(1, 2)
+            x_att = self.norm(x_att)
+            
+            att_out, _  = self.mha(x_att, x_att, x_att)
+            att_out = self.dropout(att_out)
+            att_out = att_out.transpose(1, 2).reshape(bs, c, h, w)
+            
+            output = identify * att_out + identify
+            output = self.pool_method(output).view(-1, self.in_feature)
+        else:
+            x_att = self.norm(x)
+            att_out, _ = self.mha(x_att, x_att, x_att)
+            att_out = self.dropout(att_out)
+
+            output = identify * att_out + identify
+
+            # pooling từ (B, 50, 768) -> (B, 768)
+            output = output.mean(dim=1)
+            
         return F.normalize(output)
     
     def fix_weights(self):
