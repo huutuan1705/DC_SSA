@@ -120,13 +120,13 @@ class ViT(nn.Module):
         x = self.encoder_layers(x)                        # (N, 50, 768)
         x = self.ln(x)                                    # (N, 50, 768)
 
-        # Bỏ CLS token, lấy 49 patch tokens
-        patch_tokens = x[:, 1:, :]                        # (N, 49, 768)
+        # # Bỏ CLS token, lấy 49 patch tokens
+        # patch_tokens = x[:, 1:, :]                        # (N, 49, 768)
 
-        # Reshape về spatial feature map giống InceptionV3
-        x = patch_tokens.transpose(1, 2)                  # (N, 768, 49)
-        x = x.reshape(B, self.hidden_dim,
-                       self.grid_size, self.grid_size)    # (N, 768, 7, 7)
+        # # Reshape về spatial feature map giống InceptionV3
+        # x = patch_tokens.transpose(1, 2)                  # (N, 768, 49)
+        # x = x.reshape(B, self.hidden_dim,
+        #                self.grid_size, self.grid_size)    # (N, 768, 7, 7)
 
         return x   # Tương đương (N, 2048, 8, 8) của InceptionV3
 
