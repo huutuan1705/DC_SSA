@@ -105,11 +105,11 @@ def train_model(model, args):
     
     lr = args.lr
     # loss_fn = nn.TripletMarginLoss(margin=args.margin)
-    # optimizer = optim.Adam(params=model.parameters(), lr=lr)
-    optimizer = optim.AdamW([
-        {'params': model.sample_embedding_network.parameters(), 'lr': lr},
-        {'params': model.sketch_embedding_network.parameters(), 'lr': lr},
-    ])
+    optimizer = optim.Adam(params=model.parameters(), lr=lr)
+    # optimizer = optim.AdamW([
+    #     {'params': model.sample_embedding_network.parameters(), 'lr': lr},
+    #     {'params': model.sketch_embedding_network.parameters(), 'lr': lr},
+    # ])
     # scheduler = StepLR(optimizer, step_size=100, gamma=0.1)
 
     top5, top10, avg_loss = 0, 0, 0
