@@ -24,7 +24,7 @@ def get_dataloader(args):
 
     return dataloader_train, dataloader_test
     
-def evaluate_model(model, dataloader_test):
+def evaluate_model(model, dataloader_test, args):
     with torch.no_grad():
         model.eval()
         sketch_array_tests = []
@@ -39,7 +39,8 @@ def evaluate_model(model, dataloader_test):
             for data_sketch in batch['sketch_imgs']:
                 sketch_feature = model.sketch_embedding_network(
                     data_sketch.to(device))
-                sketch_feature = model.sketch_linear(model.sketch_attention(sketch_feature)) #(25, 2048)
+                if args.backbone != "ViT":
+                    sketch_feature = model.sketch_linear(model.sketch_attention(sketch_feature)) #(25, 2048)
                 
                 sketch_features_all = torch.cat((sketch_features_all, sketch_feature.detach()))
 
@@ -49,7 +50,9 @@ def evaluate_model(model, dataloader_test):
 
             if batch['positive_path'][0] not in image_names:
                 positive_feature = model.sample_embedding_network(batch['positive_img'].to(device))
-                positive_feature = model.linear(model.attention(positive_feature))
+                
+                if args.backbone != "ViT":
+                    positive_feature = model.linear(model.attention(positive_feature))
                 
                 image_array_tests = torch.cat((image_array_tests, positive_feature))
                 image_names.extend(batch['positive_path'])
@@ -130,7 +133,7 @@ def train_model(model, args):
         avg_loss = sum(losses) / len(losses)
         
         top1_eval, top5_eval, top10_eval = evaluate_model(
-            model, dataloader_test)
+            model, dataloader_test, args)
             
         if top5_eval > top5:
             top5 = top5_eval
