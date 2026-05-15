@@ -44,13 +44,14 @@ class Siamese_SBIR(nn.Module):
         negative_feature = self.sample_embedding_network(negative_img)
         sketch_feature = self.sketch_embedding_network(sketch_img)
         
-        positive_feature = self.attention(positive_feature)
-        negative_feature = self.attention(negative_feature)
-        sketch_feature = self.sketch_attention(sketch_feature)
-        
-        positive_feature = self.linear(positive_feature)
-        negative_feature = self.linear(negative_feature)
-        sketch_feature = self.sketch_linear(sketch_feature)
+        if self.args.backbone != "ViT":
+            positive_feature = self.attention(positive_feature)
+            negative_feature = self.attention(negative_feature)
+            sketch_feature = self.sketch_attention(sketch_feature)
+            
+            positive_feature = self.linear(positive_feature)
+            negative_feature = self.linear(negative_feature)
+            sketch_feature = self.sketch_linear(sketch_feature)
         
         return sketch_feature, positive_feature, negative_feature
     

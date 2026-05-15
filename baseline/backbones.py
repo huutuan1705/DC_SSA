@@ -120,6 +120,9 @@ class ViT(nn.Module):
         x = self.encoder_layers(x)                        # (N, 50, 768)
         x = self.ln(x)                                    # (N, 50, 768)
 
+        cls_token = x[:, 0, :]                            # (N, 768)
+
+        return cls_token
         # # Bỏ CLS token, lấy 49 patch tokens
         # patch_tokens = x[:, 1:, :]                        # (N, 49, 768)
 
@@ -128,7 +131,7 @@ class ViT(nn.Module):
         # x = x.reshape(B, self.hidden_dim,
         #                self.grid_size, self.grid_size)    # (N, 768, 7, 7)
 
-        return x   # Tương đương (N, 2048, 8, 8) của InceptionV3
+        # return x   # Tương đương (N, 2048, 8, 8) của InceptionV3
 
     def fix_weights(self):
         for param in self.parameters():
